@@ -1,0 +1,16 @@
+export enum ZibalPaymentVerificationStatustEnum {
+  'waiting for payment' = -1,
+  'internal error' = -2,
+  'payed - verified' = 1,
+  'payed - not verified' = 2,
+  'canceled by user' = 3,
+  'invalid cad number' = 4,
+  'not enough account charge' = 5,
+  'wrong password' = 6,
+  'too many requests' = 7,
+  'too many online payment requests for today' = 8,
+  'exceeded the daily online payment limit' = 9,
+  'unknown card' = 10,
+  'switch error' = 11,
+  'inaccessible card' = 12,
+}
