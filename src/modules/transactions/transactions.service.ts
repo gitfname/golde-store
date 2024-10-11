@@ -1,11 +1,10 @@
-import { Injectable } from "@nestjs/common/decorators/core";
 import { InjectRepository } from "@nestjs/typeorm";
 import { FindOptionsWhere, Repository } from "typeorm";
 import { Transactions } from "./transactions.entity";
 import { UserService } from "src/common/users";
 import { BankAccountsService } from "../bank-accounts/bank-accounts.service";
 import { CreateTransactionDto, FindAllQueryDto, UpdateTransactionDto } from "./dto";
-import { BadRequestException, NotFoundException } from "@nestjs/common";
+import { BadRequestException, NotFoundException, Injectable } from "@nestjs/common";
 import { ETransactionStatus, ETransactionType } from "./transactions.enum";
 import { User } from "src/common/users/user.entity";
 import { MemoryStoredFile } from "nestjs-form-data"
@@ -224,7 +223,7 @@ export class TransactionsService {
             }
         }
         else if (transaction.transactionType === ETransactionType.GoldToRial) {
-            
+
             if (updateTransactionDto.status === ETransactionStatus.Rejected && transaction.status === ETransactionStatus.Accepted) {
                 await this.usersService.updateOne(transaction.user.id, {
                     rial: transaction.user.rial - goldToRial({
