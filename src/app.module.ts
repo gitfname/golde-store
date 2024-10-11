@@ -13,6 +13,8 @@ import { BankAccounts } from './modules/bank-accounts/bank-accounts.entity';
 import { BankAccountsModule } from './modules/bank-accounts/bank-accounts.module';
 import { Transactions } from './modules/transactions/transactions.entity';
 import { TransactionsModule } from './modules/transactions/transactions.module';
+import { ProductsModule } from './modules/products/products.module';
+import { Products } from './modules/products/products.entity';
 
 @Module({
   imports: [
@@ -24,14 +26,15 @@ import { TransactionsModule } from './modules/transactions/transactions.module';
       port: 8532,
       database: "zelma",
       synchronize: true,
-      entities: [User, PhoneVerification, NationalCard, BankAccounts, Transactions]
+      entities: [User, PhoneVerification, NationalCard, BankAccounts, Transactions, Products]
     }),
     UserModule,
     AuthModule,
     PhoneVerificationModule,
     NationalCardsModule,
     BankAccountsModule,
-    TransactionsModule
+    TransactionsModule,
+    ProductsModule
   ],
   controllers: [AppController],
   providers: [AppService],
