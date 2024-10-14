@@ -13,8 +13,8 @@ export class CreateWithdrawalPhysicalGoldDto {
 
     @ApiProperty({ name: "goldAmount", type: Number })
     @IsNumber({ maxDecimalPlaces: 4 })
-    @Max(999_999)
-    @Min(1)
+    @Max(950)
+    @Min(25)
     @Transform(params => parseFloat(params.value))
     goldAmount: number;
 }

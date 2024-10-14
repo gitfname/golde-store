@@ -17,6 +17,8 @@ import { ProductsModule } from './modules/products/products.module';
 import { Products } from './modules/products/products.entity';
 import { WithdrawalPhysicalGold } from './modules/withdrawal-physical-gold/withdrawal-physical-gold.entity';
 import { WithdrawalPhysicalGoldModule } from './modules/withdrawal-physical-gold/withdrawal-physical-gold.module';
+import { WithdrawalRial } from './modules/withdrawal-rial/withdrawal-rial.entity';
+import { WithdrawalRialModule } from './modules/withdrawal-rial/withdrawal-rial.module';
 
 @Module({
   imports: [
@@ -28,7 +30,7 @@ import { WithdrawalPhysicalGoldModule } from './modules/withdrawal-physical-gold
       port: 8532,
       database: "zelma",
       synchronize: true,
-      entities: [User, PhoneVerification, NationalCard, BankAccounts, Transactions, Products, WithdrawalPhysicalGold]
+      entities: [User, PhoneVerification, NationalCard, BankAccounts, Transactions, Products, WithdrawalPhysicalGold, WithdrawalRial]
     }),
     UserModule,
     AuthModule,
@@ -37,7 +39,8 @@ import { WithdrawalPhysicalGoldModule } from './modules/withdrawal-physical-gold
     BankAccountsModule,
     TransactionsModule,
     ProductsModule,
-    WithdrawalPhysicalGoldModule
+    WithdrawalPhysicalGoldModule,
+    WithdrawalRialModule
   ],
   controllers: [AppController],
   providers: [AppService],

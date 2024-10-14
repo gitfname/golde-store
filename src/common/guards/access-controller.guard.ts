@@ -34,9 +34,6 @@ export class AccessControllerGuard implements CanActivate {
 
         let isAllowed: any
 
-        console.log(JSON.stringify(filter, null, 2), "\n")
-        console.log(JSON.stringify(parsedFilterObject, null, 2))
-
         isAllowed = await enhancedRepo.count(parsedFilterObject)
 
         if (isAllowed) return true
