@@ -8,7 +8,7 @@ export class PagingDto implements Paging {
     @IsOptional()
     @Transform(params => isNaN(+params.value) ? 10 : +params.value)
     @IsInt()
-    @Max(30)
+    @Max(45)
     @Min(0)
     limit?: number = 10;
 
