@@ -35,6 +35,8 @@ export class PhoneVerificationService {
         const verification = await this.phoneVerificationRepository.findOneBy({ phone })
         const otpCode = generateNumericOTP()
 
+        console.log(otpCode)
+
         if (!verification) {
             await this.sendCodeToPhone(phone, otpCode)
             const verification = this.phoneVerificationRepository.create({ phone, retries: 0, date: new Date(), code: otpCode })

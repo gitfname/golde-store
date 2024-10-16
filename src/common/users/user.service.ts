@@ -10,11 +10,13 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { TypeOrmQueryService } from '@ptc-org/nestjs-query-typeorm';
 import { ERoles } from '../rbac/user-roles.enum';
+import { ShoppingCart } from 'src/modules/shopping-cart/shopping-cart.entity';
 
 @Injectable()
 export class UserService extends TypeOrmQueryService<User> {
   constructor(
     @InjectRepository(User) private readonly usersRepository: Repository<User>,
+    @InjectRepository(ShoppingCart) private readonly shoppingCartRepository: Repository<ShoppingCart>,
   ) {
     super(usersRepository)
   }
@@ -36,6 +38,12 @@ export class UserService extends TypeOrmQueryService<User> {
     }
 
     const savedUser = await this.usersRepository.save(user);
+
+    const shoppingCart = this.shoppingCartRepository.create({
+      user: savedUser
+    })
+
+    await this.shoppingCartRepository.save(shoppingCart)
 
     return savedUser;
   }
