@@ -7,6 +7,7 @@ import {
   Put,
   Req,
   UseGuards,
+  ParseIntPipe,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { UsersSerializer } from './dto/user.dto';
@@ -43,6 +44,20 @@ export class UserController {
     return plainToInstance(UsersSerializer, await this.usersService.findOneByID(+id), {
       excludeExtraneousValues: true,
     });
+  }
+
+  @Get(":id/accept-details")
+  @Roles(ERoles.SuperAdmin, ERoles.Admin)
+  @UseGuards(AuthGuard, RoleGuard)
+  async acceptUserDetails(@Param("id", ParseIntPipe) id: number): Promise<void> {
+    await this.usersService.updateOne(id, { isDetailsAccepted: true })
+  }
+
+  @Get(":id/reject-details")
+  @Roles(ERoles.SuperAdmin, ERoles.Admin)
+  @UseGuards(AuthGuard, RoleGuard)
+  async rejectUserDetails(@Param("id", ParseIntPipe) id: number): Promise<void> {
+    await this.usersService.updateOne(id, { isDetailsAccepted: false })
   }
 
   @Put(':id')

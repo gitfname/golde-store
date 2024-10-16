@@ -6,14 +6,17 @@ import { And, Or, FindOptionsWhere, Repository, MoreThanOrEqual, LessThanOrEqual
 import { S3Service } from 'src/common/lib';
 import getFileExtension from 'src/helpers/getFileExtension';
 import { PagingDto } from 'src/common/nestjs-typeorm-query/paging';
+import { TypeOrmQueryService } from "@ptc-org/nestjs-query-typeorm"
 
 @Injectable()
-export class ProductsService {
+export class ProductsService extends TypeOrmQueryService<Products> {
 
   constructor(
     @InjectRepository(Products) private readonly productsRepository: Repository<Products>,
     private readonly s3Service: S3Service
-  ) { }
+  ) {
+    super(productsRepository)
+  }
 
   async create(createProductDto: CreateProductDto): Promise<void> {
     const thumbnailImageKey = crypto.randomUUID() + "." + getFileExtension(createProductDto.thumbnailImage.originalName)
@@ -39,6 +42,7 @@ export class ProductsService {
 
     const product = this.productsRepository.create({
       ...createProductDto,
+      amountOfGoldUsed: createProductDto.amountOfGoldUsed.toFixed(4),
       thumbnailImage: thumbnailImageKey,
       coverImage: coverImageKey
     })
@@ -62,17 +66,6 @@ export class ProductsService {
           typeof findAllQueryDto?.maxFee !== "undefined"
             ?
             LessThanOrEqual(findAllQueryDto.maxFee) : undefined,
-
-      price: typeof findAllQueryDto?.minPrice !== "undefined" && typeof findAllQueryDto?.maxPrice !== "undefined"
-        ? And(MoreThanOrEqual(findAllQueryDto.minPrice), LessThanOrEqual(findAllQueryDto.maxPrice))
-        :
-        typeof findAllQueryDto?.minPrice !== "undefined"
-          ?
-          MoreThanOrEqual(findAllQueryDto.minPrice)
-          :
-          typeof findAllQueryDto?.maxPrice !== "undefined"
-            ?
-            LessThanOrEqual(findAllQueryDto.maxPrice) : undefined,
 
       amountOfGoldUsed: typeof findAllQueryDto?.minUsedGoldGrams !== "undefined" && typeof findAllQueryDto?.maxUsedGoldGrams !== "undefined"
         ? And(MoreThanOrEqual(findAllQueryDto.minUsedGoldGrams), LessThanOrEqual(findAllQueryDto.maxUsedGoldGrams))
@@ -158,7 +151,6 @@ export class ProductsService {
           throw new InternalServerErrorException("failed to upload the cover image")
         }
       }
-
 
       const updatedProduct = await this.productsRepository.update({ id }, {
         ...updateProductDto,

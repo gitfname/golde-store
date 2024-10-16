@@ -46,12 +46,6 @@ export class UpdateProductDto {
     @MaxFileSize(1900000)
     coverImage: MemoryStoredFile;
 
-    @ApiPropertyOptional({ name: "price", type: Number })
-    @IsOptional()
-    @IsDecimal()
-    @Transform(params => parseFloat(params.value))
-    price: number;
-
     @ApiPropertyOptional({ name: "isActive", type: Boolean })
     @IsOptional()
     @IsBoolean()

@@ -21,6 +21,8 @@ import { WithdrawalRial } from './modules/withdrawal-rial/withdrawal-rial.entity
 import { WithdrawalRialModule } from './modules/withdrawal-rial/withdrawal-rial.module';
 import { ShoppingCart } from './modules/shopping-cart/shopping-cart.entity';
 import { ShoppingCartModule } from './modules/shopping-cart/shopping-cart.module';
+import { ProductOrders } from './modules/product-orders/product-orders.entity';
+import { ProductOrdersModule } from './modules/product-orders/product-orders.module';
 
 @Module({
   imports: [
@@ -34,7 +36,7 @@ import { ShoppingCartModule } from './modules/shopping-cart/shopping-cart.module
       synchronize: true,
       entities: [
         User, PhoneVerification, NationalCard, BankAccounts, Transactions, Products,
-        WithdrawalPhysicalGold, WithdrawalRial, ShoppingCart
+        WithdrawalPhysicalGold, WithdrawalRial, ShoppingCart, ProductOrders
       ]
     }),
     UserModule,
@@ -46,7 +48,8 @@ import { ShoppingCartModule } from './modules/shopping-cart/shopping-cart.module
     ProductsModule,
     WithdrawalPhysicalGoldModule,
     WithdrawalRialModule,
-    ShoppingCartModule
+    ShoppingCartModule,
+    ProductOrdersModule
   ],
   controllers: [AppController],
   providers: [AppService],

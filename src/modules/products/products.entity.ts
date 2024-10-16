@@ -24,12 +24,8 @@ export class Products {
     coverImage: string;
 
     @Column("decimal", { scale: 4 })
-    @ApiProperty({ name: "price", type: Number })
-    price: number;
-
-    @Column("decimal", { scale: 4 })
     @ApiProperty({ name: "amountOfGoldUsed", type: Number })
-    amountOfGoldUsed: number;
+    amountOfGoldUsed: string | number;
 
     @Column("int", { width: 2 })
     @ApiProperty({ name: "fee", type: Number })

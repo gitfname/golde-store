@@ -38,7 +38,7 @@ export class ShoppingCartController {
     @ApiQuery({ name: "query[userId]", type: Number, required: false })
     @ApiBearerAuth()
     async findAll(
-        @Query("paging") pagingDto: PagingDto,
+        @Query("paging") pagingDto: PagingDto = { limit: 10, offset: 0 },
         @Query("query") findAllQueryDto: FindAllQueryDto,
     ): Promise<{ data: ShoppingCartSerializer[], count: number }> {
         const carts = await this.shoppingCartService.findAll(pagingDto, findAllQueryDto)
@@ -76,7 +76,7 @@ export class ShoppingCartController {
         await this.shoppingCartService.removeProduct(req["user"]["sub"], productId)
     }
 
-    @Delete()
+    @Delete("empty-my-cart")
     @UseGuards(AuthGuard)
     @ApiBearerAuth()
     async emptyShoppingCart(

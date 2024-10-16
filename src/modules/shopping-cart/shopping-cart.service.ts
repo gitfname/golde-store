@@ -35,6 +35,7 @@ export class ShoppingCartService {
 
         return this.shoppingCartRepository.findAndCount({
             where,
+            relations: { user: true, products: true },
             take: pagingDto.limit,
             skip: pagingDto.offset
         })
@@ -59,15 +60,9 @@ export class ShoppingCartService {
     }
 
     async emptyUserShoppingCart(userId: number): Promise<void> {
-        const updatedCart = await this.shoppingCartRepository.update({
-            user: {
-                id: userId
-            }
-        }, {
-            products: []
-        })
-
-        if (updatedCart.affected === 0) throw new BadRequestException("failed to empty the cart")
+        const shoppingCart = await this.findOneByUserId(userId)
+        shoppingCart.products = []
+        await this.shoppingCartRepository.save(shoppingCart)
     }
 
     async addProduct(userId: number, productId: number): Promise<void> {

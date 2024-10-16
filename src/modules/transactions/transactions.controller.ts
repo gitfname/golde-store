@@ -63,10 +63,13 @@ export class TransactionsController {
     @ApiQuery({ name: "query[status]", enum: ETransactionStatus, required: false })
     @ApiQuery({ name: "query[userId]", type: Number, required: false })
     @ApiBearerAuth()
-    async findAll(@Query() pagingDto: PagingDto): Promise<TransactionsSerializer[]> {
+    async findAll(
+        @Query("paging") pagingDto: PagingDto = { limit: 10, offset: 0 },
+        @Query("query") findAllQueryDto: FindAllQueryDto
+    ): Promise<TransactionsSerializer[]> {
         return plainToInstance(
             TransactionsSerializer,
-            await this.transactionsService.findAll(pagingDto)
+            await this.transactionsService.findAll(pagingDto, findAllQueryDto)
         )
     }
 

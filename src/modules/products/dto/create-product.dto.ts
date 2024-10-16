@@ -41,11 +41,6 @@ export class CreateProductDto {
     @MaxFileSize(1900000)
     coverImage: MemoryStoredFile;
 
-    @ApiProperty({ name: "price", type: Number })
-    @IsNumber({ maxDecimalPlaces: 4 })
-    @Transform(params => parseFloat(params.value))
-    price: number;
-
     @ApiProperty({ name: "isActive", type: Boolean })
     @IsBoolean()
     @Transform(params => (params.value + "").toLowerCase() === "true")
