@@ -3,7 +3,7 @@ import {
   IsString,
   MaxLength,
   IsOptional,
-  IsDate,
+  IsDateString
 } from 'class-validator';
 
 export class UpdateUserDto {
@@ -39,6 +39,6 @@ export class UpdateUserDto {
 
   @ApiPropertyOptional({ name: "solarBirthDate", type: Date })
   @IsOptional()
-  @IsDate()
+  @IsDateString()
   solarBirthDate: Date;
 }

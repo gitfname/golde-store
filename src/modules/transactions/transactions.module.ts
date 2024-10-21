@@ -7,6 +7,7 @@ import { S3Service } from "src/common/lib";
 import { TransactionsService } from "./transactions.service";
 import { TransactionsController } from "./transactions.controller";
 import { MemoryStoredFile, NestjsFormDataModule } from "nestjs-form-data";
+import { ApplicationDataModule } from "../application-data/application-data.module";
 
 @Module({
     imports: [
@@ -15,7 +16,8 @@ import { MemoryStoredFile, NestjsFormDataModule } from "nestjs-form-data";
         BankAccountsModule,
         NestjsFormDataModule.config({
             storage: MemoryStoredFile
-        })
+        }),
+        ApplicationDataModule
     ],
     providers: [S3Service, TransactionsService],
     controllers: [TransactionsController],

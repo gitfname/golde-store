@@ -11,6 +11,7 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { TypeOrmQueryService } from '@ptc-org/nestjs-query-typeorm';
 import { ERoles } from '../rbac/user-roles.enum';
 import { ShoppingCart } from 'src/modules/shopping-cart/shopping-cart.entity';
+import { PagingDto } from '../nestjs-typeorm-query/paging';
 
 @Injectable()
 export class UserService extends TypeOrmQueryService<User> {
@@ -48,9 +49,11 @@ export class UserService extends TypeOrmQueryService<User> {
     return savedUser;
   }
 
-  async findAll(): Promise<User[]> {
-    const users = await this.usersRepository.find();
-    return users;
+  async findAll(pagingDto: PagingDto): Promise<[User[], number]> {
+    return this.usersRepository.findAndCount({
+      take: pagingDto.limit,
+      skip: pagingDto.offset
+    })
   }
 
   async findOneByID(id: number): Promise<User> {

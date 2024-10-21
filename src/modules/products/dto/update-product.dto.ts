@@ -1,4 +1,4 @@
-import { IsBoolean, IsDecimal, IsInt, IsOptional, IsString, Max, MaxLength, Min } from "class-validator"
+import { IsBoolean, IsDecimal, IsInt, IsNumber, IsOptional, IsString, Max, MaxLength, Min } from "class-validator"
 import { Transform } from "class-transformer";
 import { IsFile, HasMimeType, MaxFileSize, MinFileSize, MemoryStoredFile } from "nestjs-form-data"
 import { ApiPropertyOptional } from "@nestjs/swagger";
@@ -18,7 +18,7 @@ export class UpdateProductDto {
 
     @ApiPropertyOptional({ name: "amountOfGoldUsed", type: Number })
     @IsOptional()
-    @IsDecimal()
+    @IsNumber({ maxDecimalPlaces: 4 })
     @Transform(params => parseFloat(params.value))
     amountOfGoldUsed: number;
 

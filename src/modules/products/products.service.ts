@@ -33,7 +33,7 @@ export class ProductsService extends TypeOrmQueryService<Products> {
 
     // upload the cover image tp s3 storage
     try {
-      await this.s3Service.uploadFile(createProductDto.coverImage, "poor-bucket", "products/cover-images/" + thumbnailImageKey)
+      await this.s3Service.uploadFile(createProductDto.coverImage, "poor-bucket", "products/cover-images/" + coverImageKey)
     } catch (error) {
       console.log("failed to upload the cover image")
       console.log(error)

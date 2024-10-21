@@ -23,20 +23,22 @@ import { ShoppingCart } from './modules/shopping-cart/shopping-cart.entity';
 import { ShoppingCartModule } from './modules/shopping-cart/shopping-cart.module';
 import { ProductOrders } from './modules/product-orders/product-orders.entity';
 import { ProductOrdersModule } from './modules/product-orders/product-orders.module';
+import { ApplicationData } from './modules/application-data/application-data.entity';
+import { ApplicationDataModule } from './modules/application-data/application-data.module';
 
 @Module({
   imports: [
     TypeOrmModule.forRoot({
       type: "postgres",
-      host: "services.irn8.chabokan.net",
+      host: "185.255.91.32",
       username: "postgres",
-      password: "a8wfdw9HEVOpUnsj",
-      port: 8532,
-      database: "zelma",
+      password: "t0QZzyaX8ccvGMSYN0EWngnR",
+      port: 5432,
+      database: "golden_vault",
       synchronize: true,
       entities: [
         User, PhoneVerification, NationalCard, BankAccounts, Transactions, Products,
-        WithdrawalPhysicalGold, WithdrawalRial, ShoppingCart, ProductOrders
+        WithdrawalPhysicalGold, WithdrawalRial, ShoppingCart, ProductOrders, ApplicationData
       ]
     }),
     UserModule,
@@ -49,7 +51,8 @@ import { ProductOrdersModule } from './modules/product-orders/product-orders.mod
     WithdrawalPhysicalGoldModule,
     WithdrawalRialModule,
     ShoppingCartModule,
-    ProductOrdersModule
+    ProductOrdersModule,
+    ApplicationDataModule
   ],
   controllers: [AppController],
   providers: [AppService],

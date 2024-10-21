@@ -12,15 +12,19 @@ import { S3Service } from "src/common/lib";
 import getFileExtension from "src/helpers/getFileExtension";
 import { PagingDto } from "src/common/nestjs-typeorm-query/paging";
 import { goldToRial, moneyToGoldGrams } from "src/helpers";
+import { ApplicationDataService } from "../application-data/application-data.service";
 
 @Injectable()
 export class TransactionsService {
+
+    private rialToGoldRate: number
 
     constructor(
         @InjectRepository(Transactions) private readonly transactionsRepository: Repository<Transactions>,
         private readonly usersService: UserService,
         private readonly bankAccountsService: BankAccountsService,
-        private readonly S3Service: S3Service
+        private readonly S3Service: S3Service,
+        private readonly applicationDataService: ApplicationDataService
     ) { }
 
     async create(userId: number, createTransactionDto: CreateTransactionDto): Promise<void> {
@@ -29,6 +33,10 @@ export class TransactionsService {
         if (!user.isDetailsAccepted) {
             throw new BadRequestException("user profile is not verified yet")
         }
+
+        const applicationData = await this.applicationDataService.findApplicationData()
+
+        this.rialToGoldRate = applicationData.rialToGoldConversionRate
 
         // transaction type : charge wallet
         if (createTransactionDto.transactionType === ETransactionType.ChargeWallet) {
@@ -111,7 +119,7 @@ export class TransactionsService {
 
         await this.usersService.updateOne(user.id, {
             rial: user.rial - rialAmount,
-            gold: (parseFloat(user.gold) + parseFloat(moneyToGoldGrams(rialAmount, 1000_000).toFixed(4))).toFixed(4)
+            gold: (parseFloat(user.gold) + parseFloat(moneyToGoldGrams(rialAmount, this.rialToGoldRate).toFixed(4))).toFixed(4)
         })
     }
 
@@ -143,7 +151,7 @@ export class TransactionsService {
         await this.usersService.updateOne(user.id, {
             rial: user.rial + goldToRial({
                 goldAmount,
-                goldToRialRate: 1000_000
+                goldToRialRate: this.rialToGoldRate
             }).finalRialAmount,
             gold: (parseFloat(user.gold) - goldAmount).toFixed(4)
         })
@@ -212,13 +220,13 @@ export class TransactionsService {
             if (updateTransactionDto.status === ETransactionStatus.Rejected) {
                 await this.usersService.updateOne(transaction.user.id, {
                     rial: transaction.user.rial + transaction.amount,
-                    gold: (parseFloat(transaction.user.gold) - parseFloat(moneyToGoldGrams(transaction.amount, 1000_000).toFixed(4))).toFixed(4)
+                    gold: (parseFloat(transaction.user.gold) - parseFloat(moneyToGoldGrams(transaction.amount, this.rialToGoldRate).toFixed(4))).toFixed(4)
                 })
             }
             else if (updateTransactionDto.status === ETransactionStatus.Accepted && transaction.status === ETransactionStatus.Rejected) {
                 await this.usersService.updateOne(transaction.user.id, {
                     rial: transaction.user.rial - transaction.amount,
-                    gold: (parseFloat(transaction.user.gold) + parseFloat(moneyToGoldGrams(transaction.amount, 1000_000).toFixed(4))).toFixed(4)
+                    gold: (parseFloat(transaction.user.gold) + parseFloat(moneyToGoldGrams(transaction.amount, this.rialToGoldRate).toFixed(4))).toFixed(4)
                 })
             }
         }
@@ -228,7 +236,7 @@ export class TransactionsService {
                 await this.usersService.updateOne(transaction.user.id, {
                     rial: transaction.user.rial - goldToRial({
                         goldAmount: parseFloat(transaction.goldAmount),
-                        goldToRialRate: 1000_000
+                        goldToRialRate: this.rialToGoldRate
                     }).finalRialAmount,
                     gold: (parseFloat(transaction.user.gold) + parseFloat(transaction.goldAmount)).toFixed(4)
                 })
@@ -237,7 +245,7 @@ export class TransactionsService {
                 await this.usersService.updateOne(transaction.user.id, {
                     rial: transaction.user.rial + goldToRial({
                         goldAmount: parseFloat(transaction.goldAmount),
-                        goldToRialRate: 1000_000
+                        goldToRialRate: this.rialToGoldRate
                     }).finalRialAmount,
                     gold: (parseFloat(transaction.user.gold) - parseFloat(transaction.goldAmount)).toFixed(4)
                 })
