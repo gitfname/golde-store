@@ -30,11 +30,12 @@ import { ApplicationDataModule } from './modules/application-data/application-da
   imports: [
     TypeOrmModule.forRoot({
       type: "postgres",
-      host: "185.255.91.32",
+      // host: "185.255.91.32",
+      host: "103.75.198.152",
       username: "postgres",
-      password: "t0QZzyaX8ccvGMSYN0EWngnR",
-      port: 5432,
-      database: "golden_vault",
+      password: "rDeSx514NlgV2SvtPFUVaeNLdHRXFXt6X6VjFRxUbAo3cXBVcWMnjA0o4xIZ2jhK",
+      port: 3008,
+      database: "postgres",
       synchronize: true,
       entities: [
         User, PhoneVerification, NationalCard, BankAccounts, Transactions, Products,
