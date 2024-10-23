@@ -7,13 +7,16 @@ import { S3Service } from 'src/common/lib';
 import getFileExtension from 'src/helpers/getFileExtension';
 import { PagingDto } from 'src/common/nestjs-typeorm-query/paging';
 import { TypeOrmQueryService } from "@ptc-org/nestjs-query-typeorm"
+import { ProductCategoriesService } from '../product-categories/product-categories.service';
+import { ProductCategories } from '../product-categories/product-categories.entity';
 
 @Injectable()
 export class ProductsService extends TypeOrmQueryService<Products> {
 
   constructor(
     @InjectRepository(Products) private readonly productsRepository: Repository<Products>,
-    private readonly s3Service: S3Service
+    private readonly s3Service: S3Service,
+    private readonly productCategoriesService: ProductCategoriesService
   ) {
     super(productsRepository)
   }
@@ -40,11 +43,18 @@ export class ProductsService extends TypeOrmQueryService<Products> {
       throw new InternalServerErrorException("failed to upload the cover image")
     }
 
+    let productCategory: ProductCategories | null = null
+
+    if (typeof createProductDto.category === "number") {
+      productCategory = await this.productCategoriesService.findOneById(createProductDto.category)
+    }
+
     const product = this.productsRepository.create({
       ...createProductDto,
       amountOfGoldUsed: createProductDto.amountOfGoldUsed.toFixed(4),
       thumbnailImage: thumbnailImageKey,
-      coverImage: coverImageKey
+      coverImage: coverImageKey,
+      category: productCategory
     })
 
     await this.productsRepository.save(product)
@@ -90,18 +100,25 @@ export class ProductsService extends TypeOrmQueryService<Products> {
     return this.productsRepository.findAndCount({
       where,
       take: pagingDto.limit,
-      skip: pagingDto.offset
+      skip: pagingDto.offset,
+      relations: { category: true }
     })
   }
 
   async findOne(id: number): Promise<Products> {
-    const product = await this.productsRepository.findOneBy({ id })
+    const product = await this.productsRepository.findOne({ where: { id }, relations: { category: true } })
     if (!product) throw new NotFoundException("product not found")
     return product
   }
 
   async update(id: number, updateProductDto: UpdateProductDto): Promise<void> {
     const oldProduct = await this.findOne(id)
+
+    let productCategory: ProductCategories | undefined = undefined
+
+    if (typeof updateProductDto.category === "number") {
+      productCategory = await this.productCategoriesService.findOneById(updateProductDto.category)
+    }
 
     if (updateProductDto.coverImage || updateProductDto.thumbnailImage) {
       const newThumbnailImageKey = updateProductDto.thumbnailImage ? crypto.randomUUID() + "." + getFileExtension(updateProductDto.thumbnailImage.originalName) : undefined
@@ -155,14 +172,15 @@ export class ProductsService extends TypeOrmQueryService<Products> {
       const updatedProduct = await this.productsRepository.update({ id }, {
         ...updateProductDto,
         thumbnailImage: newThumbnailImageKey,
-        coverImage: newCoverImageKey
+        coverImage: newCoverImageKey,
+        category: productCategory
       })
 
       if (updatedProduct.affected === 0) throw new NotFoundException("failed to update product")
     }
     else {
       const { coverImage, thumbnailImage, ...restUpdateProductDto } = updateProductDto
-      const updatedProduct = await this.productsRepository.update({ id }, restUpdateProductDto)
+      const updatedProduct = await this.productsRepository.update({ id }, { ...restUpdateProductDto, category: productCategory })
       if (updatedProduct.affected === 0) throw new NotFoundException("product not found")
     }
   }

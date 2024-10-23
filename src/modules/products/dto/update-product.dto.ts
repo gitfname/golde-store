@@ -57,4 +57,11 @@ export class UpdateProductDto {
     @IsBoolean()
     @Transform(params => (params.value + "").toLowerCase() === "true")
     isAvailable: boolean;
+
+    @IsOptional()
+    @IsInt()
+    @Min(1)
+    @Max(999_999)
+    @Transform(params => +params.value)
+    category?: number;
 }

@@ -6,6 +6,7 @@ import { Products } from './products.entity';
 import { UserModule } from 'src/common/users';
 import { S3Service } from 'src/common/lib';
 import { MemoryStoredFile, NestjsFormDataModule } from 'nestjs-form-data';
+import { ProductCategoriesModule } from '../product-categories/product-categories.module';
 
 @Module({
   imports: [
@@ -13,7 +14,8 @@ import { MemoryStoredFile, NestjsFormDataModule } from 'nestjs-form-data';
     NestjsFormDataModule.config({
       storage: MemoryStoredFile
     }),
-    UserModule
+    UserModule,
+    ProductCategoriesModule
   ],
   providers: [S3Service, ProductsService],
   controllers: [ProductsController],

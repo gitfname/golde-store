@@ -1,5 +1,7 @@
-import { ApiProperty } from "@nestjs/swagger";
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn } from "typeorm"
+import { ApiProperty, ApiPropertyOptional } from "@nestjs/swagger";
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, ManyToOne, JoinColumn } from "typeorm"
+import { ProductCategories } from "../product-categories/product-categories.entity";
+import { ProductCategoriesSerializer } from "../product-categories/serializer";
 
 @Entity({ name: "products" })
 export class Products {
@@ -38,6 +40,11 @@ export class Products {
     @Column("boolean", { default: true })
     @ApiProperty({ name: "isAvailable", type: Boolean })
     isAvailable: boolean;
+
+    @ManyToOne(() => ProductCategories, { nullable: true, onDelete: "SET NULL" })
+    @JoinColumn()
+    @ApiPropertyOptional({ name: "category", type: ProductCategoriesSerializer })
+    category?: ProductCategories;
 
     @CreateDateColumn()
     @ApiProperty({ name: "createdAt", type: Date })

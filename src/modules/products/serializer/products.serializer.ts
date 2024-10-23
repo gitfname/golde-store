@@ -1,5 +1,6 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { Expose } from "class-transformer";
+import { Expose, Type } from "class-transformer";
+import { ProductCategoriesSerializer } from "src/modules/product-categories/serializer";
 
 export class ProductsSerializer {
     @ApiProperty({ name: "id", type: Number })
@@ -41,6 +42,10 @@ export class ProductsSerializer {
     @ApiProperty({ name: "isAvailable", type: Boolean })
     @Expose()
     isAvailable: boolean;
+
+    @Expose()
+    @Type(() => ProductCategoriesSerializer)
+    category?: ProductCategoriesSerializer;
 
     @ApiProperty({ name: "createdAt", type: Date })
     @Expose()

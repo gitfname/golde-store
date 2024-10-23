@@ -25,6 +25,8 @@ import { ProductOrders } from './modules/product-orders/product-orders.entity';
 import { ProductOrdersModule } from './modules/product-orders/product-orders.module';
 import { ApplicationData } from './modules/application-data/application-data.entity';
 import { ApplicationDataModule } from './modules/application-data/application-data.module';
+import { ProductCategories } from './modules/product-categories/product-categories.entity';
+import { ProductCategoriesModule } from './modules/product-categories/product-categories.module';
 
 @Module({
   imports: [
@@ -39,7 +41,8 @@ import { ApplicationDataModule } from './modules/application-data/application-da
       synchronize: true,
       entities: [
         User, PhoneVerification, NationalCard, BankAccounts, Transactions, Products,
-        WithdrawalPhysicalGold, WithdrawalRial, ShoppingCart, ProductOrders, ApplicationData
+        WithdrawalPhysicalGold, WithdrawalRial, ShoppingCart, ProductOrders, ApplicationData,
+        ProductCategories
       ]
     }),
     UserModule,
@@ -53,7 +56,8 @@ import { ApplicationDataModule } from './modules/application-data/application-da
     WithdrawalRialModule,
     ShoppingCartModule,
     ProductOrdersModule,
-    ApplicationDataModule
+    ApplicationDataModule,
+    ProductCategoriesModule
   ],
   controllers: [AppController],
   providers: [AppService],
