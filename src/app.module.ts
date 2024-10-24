@@ -38,7 +38,7 @@ import { ProductCategoriesModule } from './modules/product-categories/product-ca
       // password: "rDeSx514NlgV2SvtPFUVaeNLdHRXFXt6X6VjFRxUbAo3cXBVcWMnjA0o4xIZ2jhK",
       password: "9gcSR6cYd6I2s3YF8FSLncsnqlIcFqp5Y0mAL0CNVdj25lOGAr7SZVh3p9MQ0Jlx",
       // port: 3008,
-      port: 3011,
+      port: 3013,
       database: "postgres",
       synchronize: true,
       entities: [
