@@ -18,11 +18,11 @@ export class PhoneVerificationService {
 
     async sendCodeToPhone(phone: string, code: string): Promise<void> {
         const sendOtpCode = await this.meliPayamakService.sendMessage({
-            from: "50004001000020",
+            from: "",
             to: phone,
             isFlash: false,
-            password: "CL4ET",
-            username: "09127788031",
+            password: "",
+            username: "",
             text: `کد تایید شما : ${code}`,
         })
 

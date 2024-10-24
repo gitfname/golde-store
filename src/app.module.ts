@@ -32,7 +32,7 @@ import { ProductCategoriesModule } from './modules/product-categories/product-ca
   imports: [
     TypeOrmModule.forRoot({
       type: "postgres",
-      url: "postgres://postgres:9gcSR6cYd6I2s3YF8FSLncsnqlIcFqp5Y0mAL0CNVdj25lOGAr7SZVh3p9MQ0Jlx@x40ok4so4wkgkksggc0o4ook:5432/postgres",
+      url: "CONNECTION_STRING",
       synchronize: true,
       entities: [
         User, PhoneVerification, NationalCard, BankAccounts, Transactions, Products,
