@@ -32,14 +32,7 @@ import { ProductCategoriesModule } from './modules/product-categories/product-ca
   imports: [
     TypeOrmModule.forRoot({
       type: "postgres",
-      // host: "103.75.198.152",
-      host: "65.21.105.203",
-      username: "postgres",
-      // password: "rDeSx514NlgV2SvtPFUVaeNLdHRXFXt6X6VjFRxUbAo3cXBVcWMnjA0o4xIZ2jhK",
-      password: "9gcSR6cYd6I2s3YF8FSLncsnqlIcFqp5Y0mAL0CNVdj25lOGAr7SZVh3p9MQ0Jlx",
-      // port: 3008,
-      port: 3013,
-      database: "postgres",
+      url: "postgres://postgres:9gcSR6cYd6I2s3YF8FSLncsnqlIcFqp5Y0mAL0CNVdj25lOGAr7SZVh3p9MQ0Jlx@x40ok4so4wkgkksggc0o4ook:5432/postgres",
       synchronize: true,
       entities: [
         User, PhoneVerification, NationalCard, BankAccounts, Transactions, Products,
