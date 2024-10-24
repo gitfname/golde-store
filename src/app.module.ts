@@ -32,11 +32,13 @@ import { ProductCategoriesModule } from './modules/product-categories/product-ca
   imports: [
     TypeOrmModule.forRoot({
       type: "postgres",
-      // host: "185.255.91.32",
-      host: "103.75.198.152",
+      // host: "103.75.198.152",
+      host: "65.21.105.203",
       username: "postgres",
-      password: "rDeSx514NlgV2SvtPFUVaeNLdHRXFXt6X6VjFRxUbAo3cXBVcWMnjA0o4xIZ2jhK",
-      port: 3008,
+      // password: "rDeSx514NlgV2SvtPFUVaeNLdHRXFXt6X6VjFRxUbAo3cXBVcWMnjA0o4xIZ2jhK",
+      password: "9gcSR6cYd6I2s3YF8FSLncsnqlIcFqp5Y0mAL0CNVdj25lOGAr7SZVh3p9MQ0Jlx",
+      // port: 3008,
+      port: 3011,
       database: "postgres",
       synchronize: true,
       entities: [
